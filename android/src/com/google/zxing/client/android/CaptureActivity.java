@@ -61,6 +61,7 @@ import com.google.zxing.client.android.camera.CameraManager;
 import com.google.zxing.client.android.result.ResultButtonListener;
 import com.google.zxing.client.android.result.ResultHandler;
 import com.google.zxing.client.android.result.ResultHandlerFactory;
+import me.perkd.barscansdk.R;
 
 /**
  * This activity opens the camera and does the actual scanning on a background thread. It draws a

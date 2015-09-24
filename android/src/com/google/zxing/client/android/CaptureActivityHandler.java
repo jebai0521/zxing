@@ -17,6 +17,7 @@
 package com.google.zxing.client.android;
 
 import android.content.ActivityNotFoundException;
+import me.perkd.barscansdk.R;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.BitmapFactory;

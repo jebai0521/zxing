@@ -33,7 +33,7 @@ import android.util.Log;
 
 import java.io.ByteArrayOutputStream;
 import java.util.Map;
-
+import me.perkd.barscansdk.R;
 final class DecodeHandler extends Handler {
 
   private static final String TAG = DecodeHandler.class.getSimpleName();
