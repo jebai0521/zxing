@@ -22,15 +22,14 @@ import java.util.Collection;
 import me.perkd.barscansdk.R;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
@@ -85,6 +84,12 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
     ambientLightManager = new AmbientLightManager(this);
 
     PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+    
+    if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+    } else {
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+    }
   }
 
   @Override
@@ -102,14 +107,6 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
 
     handler = null;
 
-    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-
-    if (prefs.getBoolean(Constants.KEY_DISABLE_AUTO_ORIENTATION, true)) {
-      setRequestedOrientation(getCurrentOrientation());
-    } else {
-      setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
-    }
-
     resetStatusView();
 
     ambientLightManager.start(cameraManager);
@@ -126,17 +123,6 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
     } else {
       // Install the callback and wait for surfaceCreated() to init the camera.
       surfaceHolder.addCallback(this);
-    }
-  }
-
-  private int getCurrentOrientation() {
-    int rotation = getWindowManager().getDefaultDisplay().getRotation();
-    switch (rotation) {
-      case Surface.ROTATION_0:
-      case Surface.ROTATION_90:
-        return ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
-      default:
-        return ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE;
     }
   }
 

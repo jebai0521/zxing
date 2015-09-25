@@ -56,6 +56,14 @@ final class CameraConfigurationManager {
     Log.i(TAG, "Screen resolution: " + screenResolution);
     cameraResolution = CameraConfigurationUtils.findBestPreviewSizeValue(parameters, screenResolution);
     Log.i(TAG, "Camera resolution: " + cameraResolution);
+    Point screenResolutionForCamera = new Point();
+    screenResolutionForCamera.x = screenResolution.x;
+    screenResolutionForCamera.y = screenResolution.y;
+    // preview size is always something like 480*320, other 320*480
+    if (screenResolution.x < screenResolution.y) {
+        screenResolutionForCamera.x = screenResolution.y;
+        screenResolutionForCamera.y = screenResolution.x;
+    }
   }
 
   void setDesiredCameraParameters(Camera camera, boolean safeMode) {
@@ -102,7 +110,7 @@ final class CameraConfigurationManager {
     parameters.setPreviewSize(cameraResolution.x, cameraResolution.y);
 
     Log.i(TAG, "Final camera parameters: " + parameters.flatten());
-
+    camera.setDisplayOrientation(90);
     camera.setParameters(parameters);
 
     Camera.Parameters afterParameters = camera.getParameters();

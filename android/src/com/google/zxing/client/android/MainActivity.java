@@ -31,12 +31,6 @@ public class MainActivity extends Activity {
 		this.startActivityForResult(intent, 0);
 	}
 
-	public void onTestClick(View view) {
-		Intent intent = new Intent();
-		intent.setClass(MainActivity.this, TestActivity.class);
-		this.startActivityForResult(intent, 1);
-	}
-
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
@@ -51,12 +45,6 @@ public class MainActivity extends Activity {
 			} else {
 				
 			}
-			
-			break;
-		case 1:
-			
-			
-			Log.d(TAG, "back from test activity");
 			
 			break;
 		default:

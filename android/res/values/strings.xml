@@ -18,7 +18,7 @@
 
     <string name="app_name">Barcode Scanner</string>
     <string name="scan">扫描</string>
-    <string name="test">测试</string>
+    <string name="result">结果</string>
     <string name="app_picker_name">Applications</string>
     <string name="bookmark_picker_name">Bookmarks</string>
     <string name="button_add_calendar">Add to calendar</string>
