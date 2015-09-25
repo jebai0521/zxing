@@ -74,17 +74,15 @@
             android:clearTaskOnLaunch="true"
             android:screenOrientation="sensorLandscape"
             android:stateNotNeeded="true"
-			android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
             android:windowSoftInputMode="stateAlwaysHidden" >
         </activity>
         <activity
             android:name="com.google.zxing.client.android.MainActivity"
             android:screenOrientation="user"
             android:stateNotNeeded="true" >
-            
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
