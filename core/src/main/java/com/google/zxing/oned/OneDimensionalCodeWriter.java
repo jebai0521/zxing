@@ -59,13 +59,13 @@ public abstract class OneDimensionalCodeWriter implements Writer {
                                              + width + 'x' + height);
     }
 
-    int sidesMargin = getDefaultMargin();
+    int sidesMargin = getDefaultMargin(format);
     if (hints != null && hints.containsKey(EncodeHintType.MARGIN)) {
       sidesMargin = Integer.parseInt(hints.get(EncodeHintType.MARGIN).toString());
     }
 
     boolean[] code = encode(contents);
-    return renderResult(code, width, height, sidesMargin);
+    return renderResultV2(code, width, height, sidesMargin);
   }
 
   /**
@@ -82,6 +82,35 @@ public abstract class OneDimensionalCodeWriter implements Writer {
     int leftPadding = (outputWidth - (inputWidth * multiple)) / 2;
 
     BitMatrix output = new BitMatrix(outputWidth, outputHeight);
+    for (int inputX = 0, outputX = leftPadding; inputX < inputWidth; inputX++, outputX += multiple) {
+      if (code[inputX]) {
+        output.setRegion(outputX, 0, multiple, outputHeight);
+      }
+    }
+    return output;
+  }
+
+  private static BitMatrix renderResultV2(boolean[] code, int width, int height, int sidesMargin) {
+    int inputWidth = code.length;
+    // Add quiet zone on both sides.
+    int fullWidth = inputWidth + (sidesMargin<<1);
+    int outputWidth = Math.max(width, fullWidth);
+    int outputHeight = Math.max(1, height);
+
+    // 缩放倍数
+    int multiple = 1;
+    
+    if (fullWidth > outputWidth) {
+      outputWidth = fullWidth;
+    } else {
+      multiple = outputWidth / fullWidth;
+      outputWidth = fullWidth * multiple;
+    }
+    
+    int leftPadding = sidesMargin * multiple;
+
+    BitMatrix output = new BitMatrix(outputWidth, outputHeight);
+
     for (int inputX = 0, outputX = leftPadding; inputX < inputWidth; inputX++, outputX += multiple) {
       if (code[inputX]) {
         output.setRegion(outputX, 0, multiple, outputHeight);
@@ -109,6 +138,13 @@ public abstract class OneDimensionalCodeWriter implements Writer {
       color = !color; // flip color after each segment
     }
     return numAdded;
+  }
+
+  public int getDefaultMargin(BarcodeFormat format) {
+    // CodaBar spec requires a side margin to be more than ten times wider than narrow space.
+    // This seems like a decent idea for a default for all formats.
+    return format == BarcodeFormat.CODABAR ? 10 : 0;
+
   }
 
   public int getDefaultMargin() {

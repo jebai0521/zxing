@@ -25,8 +25,8 @@ public final class BarcodeMatrix {
 
   private final BarcodeRow[] matrix;
   private int currentRow;
-  private final int height;
-  private final int width;
+  public final int height;
+  public final int width;
 
   /**
    * @param height the height of the matrix (Rows)

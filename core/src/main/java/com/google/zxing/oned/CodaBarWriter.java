@@ -44,12 +44,15 @@ public final class CodaBarWriter extends OneDimensionalCodeWriter {
       boolean endsAlt = CodaBarReader.arrayContains(ALT_START_END_CHARS, lastChar);
       if (startsNormal) {
         if (!endsNormal) {
-          throw new IllegalArgumentException("Invalid start/end guards: " + contents);
+          // throw new IllegalArgumentException("Invalid start/end guards: " + contents);
+          
+          contents = contents + DEFAULT_GUARD;
         }
         // else already has valid start/end
       } else if (startsAlt) {
         if (!endsAlt) {
-          throw new IllegalArgumentException("Invalid start/end guards: " + contents);
+          // throw new IllegalArgumentException("Invalid start/end guards: " + contents);
+          contents = DEFAULT_GUARD + contents;
         }
         // else already has valid start/end
       } else {

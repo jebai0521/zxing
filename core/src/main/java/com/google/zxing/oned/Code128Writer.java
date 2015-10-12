@@ -65,7 +65,7 @@ public final class Code128Writer extends OneDimensionalCodeWriter {
   public boolean[] encode(String contents) {
     int length = contents.length();
     // Check length
-    if (length < 1 || length > 80) {
+    if (length < 1) {
       throw new IllegalArgumentException(
           "Contents length should be between 1 and 80 characters, but got " + length);
     }

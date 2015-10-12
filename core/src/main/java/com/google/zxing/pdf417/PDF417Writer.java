@@ -21,6 +21,7 @@ import com.google.zxing.EncodeHintType;
 import com.google.zxing.Writer;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
+import com.google.zxing.pdf417.encoder.BarcodeMatrix;
 import com.google.zxing.pdf417.encoder.Compaction;
 import com.google.zxing.pdf417.encoder.Dimensions;
 import com.google.zxing.pdf417.encoder.PDF417;
@@ -37,7 +38,7 @@ public final class PDF417Writer implements Writer {
   /**
    * default white space (margin) around the code
    */
-  static final int WHITE_SPACE = 30;
+  static final int WHITE_SPACE = 5;
 
   /**
    * default error correction level
@@ -106,8 +107,16 @@ public final class PDF417Writer implements Writer {
                                                 int margin) throws WriterException {
     encoder.generateBarcodeLogic(contents, errorCorrectionLevel);
 
-    int aspectRatio = 4;
-    byte[][] originalScale = encoder.getBarcodeMatrix().getScaledMatrix(1, aspectRatio);
+    // int aspectRatio = 4;
+    // byte[][] originalScale = encoder.getBarcodeMatrix().getScaledMatrix(1, aspectRatio);
+
+    BarcodeMatrix barcodeMatrix =  encoder.getBarcodeMatrix();
+    int cols = barcodeMatrix.width;
+    int rows = barcodeMatrix.height;
+    
+    int lineThickness = width / (cols + 69);
+    int aspectRatio = height / (lineThickness * rows);
+    byte[][] originalScale = encoder.getBarcodeMatrix().getScaledMatrix(lineThickness, aspectRatio * lineThickness);
     boolean rotated = false;
     if ((height > width) ^ (originalScale[0].length < originalScale.length)) {
       originalScale = rotateArray(originalScale);
@@ -126,7 +135,7 @@ public final class PDF417Writer implements Writer {
 
     if (scale > 1) {
       byte[][] scaledMatrix =
-          encoder.getBarcodeMatrix().getScaledMatrix(scale, scale * aspectRatio);
+          barcodeMatrix.getScaledMatrix(scale, scale * aspectRatio);
       if (rotated) {
         scaledMatrix = rotateArray(scaledMatrix);
       }

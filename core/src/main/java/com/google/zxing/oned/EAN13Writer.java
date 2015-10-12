@@ -52,7 +52,15 @@ public final class EAN13Writer extends UPCEANWriter {
 
   @Override
   public boolean[] encode(String contents) {
-    if (contents.length() != 13) {
+    
+    if (contents.length() == 12) {
+      int sum = 0;
+      for (int i = 0; i < contents.length(); ++i) {
+        sum += (Integer.parseInt(contents.substring(i, i + 1)) - '0') * (i % 2 == 0 ? 1 : 3);
+      }
+      
+      contents = String.format("%s%d", contents, (1000 - sum) % 10);
+    } else if (contents.length() != 13) {
       throw new IllegalArgumentException(
           "Requested contents should be 13 digits long, but got " + contents.length());
     }
